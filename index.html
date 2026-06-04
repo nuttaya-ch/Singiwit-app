@@ -21,6 +21,7 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 .setup-hint{font-size:12px;color:var(--text3);margin-bottom:24px;line-height:1.6;}
 .setup-hint a{color:var(--blue);}
 .setup-btn{width:100%;padding:14px;background:var(--accent-bg);color:var(--accent-text);border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;font-family:'Sarabun',sans-serif;cursor:pointer;}
+.free-badge{display:inline-block;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;margin-bottom:16px;}
 .setup-steps{margin-top:28px;border-top:1px solid var(--border);padding-top:20px;}
 .setup-steps-title{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:12px;}
 .step-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;}
@@ -92,18 +93,18 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 <div id="setup-screen">
   <div class="setup-card">
     <div class="setup-logo">SINGHAWIT AI</div>
+    <div class="free-badge">✓ ฟรี 100% ไม่มีค่าใช้จ่าย</div>
     <div class="setup-title">ยินดีต้อนรับ</div>
-    <div class="setup-sub">ใส่ Claude API Key เพื่อเปิดใช้งานฟีเจอร์ AI</div>
-    <label class="setup-label">Claude API Key</label>
-    <input type="password" class="setup-input" id="api-key-input" placeholder="sk-ant-api03-...">
-    <div class="setup-hint">รับ Key ได้ที่ <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys<br>Key เก็บในอุปกรณ์นี้เท่านั้น</div>
+    <div class="setup-sub">ใส่ Gemini API Key เพื่อเปิดใช้งาน<br>ฟรี 1,500 ครั้ง/วัน ไม่ต้องใส่บัตรเครดิต</div>
+    <label class="setup-label">Gemini API Key</label>
+    <input type="password" class="setup-input" id="api-key-input" placeholder="AIza...">
+    <div class="setup-hint">รับ Key ฟรีได้ที่ <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> → API Keys → Copy<br>Key เก็บในอุปกรณ์นี้เท่านั้น ไม่มีการส่งออก</div>
     <button class="setup-btn" onclick="saveApiKey()">เริ่มใช้งาน →</button>
     <div class="setup-steps">
-      <div class="setup-steps-title">วิธีรับ API Key</div>
-      <div class="step-item"><div class="step-num">1</div><div class="step-text">ไปที่ <strong>console.anthropic.com</strong> → Sign up</div></div>
-      <div class="step-item"><div class="step-num">2</div><div class="step-text">เมนู <strong>API Keys</strong> → <strong>Create Key</strong></div></div>
-      <div class="step-item"><div class="step-num">3</div><div class="step-text">Copy key ขึ้นต้นด้วย <code>sk-ant-</code> มาวาง</div></div>
-      <div class="step-item"><div class="step-num">4</div><div class="step-text">Account ใหม่ได้เครดิตทดลองฟรี <strong>$5</strong></div></div>
+      <div class="setup-steps-title">วิธีรับ Key (มีอยู่แล้ว copy ได้เลย)</div>
+      <div class="step-item"><div class="step-num">1</div><div class="step-text">ไปที่ <strong>aistudio.google.com</strong></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-text">เมนูซ้าย <strong>API Keys</strong></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-text">กดไอคอน copy ที่บรรทัด key แล้ววางที่นี่</div></div>
     </div>
   </div>
 </div>
@@ -111,7 +112,7 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
   <div class="app-header">
     <div class="app-header-left">
       <div class="app-logo-mark"><svg viewBox="0 0 16 16"><path d="M8 1L14 4.5V11.5L8 15L2 11.5V4.5L8 1Z"/></svg></div>
-      <div><div class="app-logo-text">สิงห์วิท AI</div><div class="app-logo-sub">ระบบเอกสารอัจฉริยะ</div></div>
+      <div><div class="app-logo-text">สิงห์วิท AI</div><div class="app-logo-sub">powered by Gemini • ฟรี</div></div>
     </div>
     <div class="api-status" onclick="resetKey()">● เชื่อมต่อแล้ว</div>
   </div>
@@ -129,11 +130,11 @@ html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);colo
 <div class="copy-toast" id="copy-toast">คัดลอกแล้ว ✓</div>
 <script>
 const CO={name:'บริษัท สิงห์วิท จำกัด',tag:'ออกแบบ ก่อสร้าง และดูแลงานระบบอาคารครบวงจร',tax:'0135565012570',tel:'063-847-7696'};
-let API_KEY='',itemCount=2,currentTab='qt';
-function saveApiKey(){const k=document.getElementById('api-key-input').value.trim();if(!k||!k.startsWith('sk-ant-')){alert('กรุณาใส่ API Key ที่ถูกต้อง (ขึ้นต้นด้วย sk-ant-)');return;}API_KEY=k;localStorage.setItem('sw_api_key',k);document.getElementById('setup-screen').style.display='none';document.getElementById('app-screen').classList.add('active');renderTab('qt');}
-function resetKey(){if(confirm('ต้องการเปลี่ยน API Key?')){localStorage.removeItem('sw_api_key');location.reload();}}
-window.onload=function(){const s=localStorage.getItem('sw_api_key');if(s){API_KEY=s;document.getElementById('setup-screen').style.display='none';document.getElementById('app-screen').classList.add('active');renderTab('qt');}};
-function switchTab(btn,tab){document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentTab=tab;itemCount=2;renderTab(tab);}
+let API_KEY='',itemCount=2;
+function saveApiKey(){const k=document.getElementById('api-key-input').value.trim();if(!k||!k.startsWith('AIza')){alert('กรุณาใส่ Gemini API Key ที่ถูกต้อง (ขึ้นต้นด้วย AIza)');return;}API_KEY=k;localStorage.setItem('sw_gemini_key',k);document.getElementById('setup-screen').style.display='none';document.getElementById('app-screen').classList.add('active');renderTab('qt');}
+function resetKey(){if(confirm('ต้องการเปลี่ยน API Key?')){localStorage.removeItem('sw_gemini_key');location.reload();}}
+window.onload=function(){const s=localStorage.getItem('sw_gemini_key');if(s){API_KEY=s;document.getElementById('setup-screen').style.display='none';document.getElementById('app-screen').classList.add('active');renderTab('qt');}};
+function switchTab(btn,tab){document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');itemCount=2;renderTab(tab);}
 function today(){return new Date().toISOString().split('T')[0];}
 function thaiDate(d){if(!d)return'';return new Date(d).toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});}
 function fmtMoney(n){return Number(n).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -147,13 +148,13 @@ function renderTab(tab){
   }else if(tab==='handover'){
     c.innerHTML=`<div class="form-card"><div class="form-card-title">✅ ใบรับมอบงาน</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>ชื่อโปรเจค</label><input id="f_project" placeholder="ติดตั้งระบบไฟฟ้า"></div><div class="field"><label>วันที่ส่งมอบ</label><input id="f_date" type="date" value="${today()}"></div><div class="field"><label>รายการ (แยกบรรทัด)</label><textarea id="f_items" placeholder="ระบบไฟฟ้าชั้น 1&#10;ระบบไฟฟ้าชั้น 2" style="min-height:90px"></textarea></div><div class="field"><label>การรับประกัน</label><input id="f_warranty" value="1 ปี นับจากวันส่งมอบ"></div></div><button class="gen-btn" id="gen-btn" onclick="genHandover()">สร้างใบรับมอบงาน</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">ใบรับมอบงาน</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div id="result-body"></div></div>`;
   }else if(tab==='scope'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">🤖 Scope งาน AI</div><div class="field"><label>ประเภทงาน</label><select id="f_worktype"><option>ระบบไฟฟ้า</option><option>ระบบประปา</option><option>ระบบปรับอากาศ</option><option>ก่อสร้างอาคาร</option><option>ระบบดับเพลิง</option><option>งานครบวงจร</option></select></div><div class="field"><label>ประเภทอาคาร</label><input id="f_building" placeholder="โรงงาน / สำนักงาน / บ้าน"></div><div class="field"><label>พื้นที่ (ตร.ม.)</label><input id="f_area" type="number" placeholder="500" inputmode="numeric"></div><div class="field"><label>ข้อมูลเพิ่มเติม</label><textarea id="f_extra" placeholder="อาคาร 3 ชั้น, ห้องเซิร์ฟเวอร์..."></textarea></div></div><button class="gen-btn" id="gen-btn" onclick="callAI('scope')">สร้าง Scope ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Scope — พร้อมใส่ QT</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
+    c.innerHTML=`<div class="form-card"><div class="form-card-title">🤖 Scope งาน AI (Gemini)</div><div class="field"><label>ประเภทงาน</label><select id="f_worktype"><option>ระบบไฟฟ้า</option><option>ระบบประปา</option><option>ระบบปรับอากาศ</option><option>ก่อสร้างอาคาร</option><option>ระบบดับเพลิง</option><option>งานครบวงจร</option></select></div><div class="field"><label>ประเภทอาคาร</label><input id="f_building" placeholder="โรงงาน / สำนักงาน / บ้าน"></div><div class="field"><label>พื้นที่ (ตร.ม.)</label><input id="f_area" type="number" placeholder="500" inputmode="numeric"></div><div class="field"><label>ข้อมูลเพิ่มเติม</label><textarea id="f_extra" placeholder="อาคาร 3 ชั้น, ห้องเซิร์ฟเวอร์..."></textarea></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('scope')">สร้าง Scope ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Scope — พร้อมใส่ QT</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
   }else if(tab==='email'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">✉️ Email AI</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>จุดประสงค์</label><select id="f_purpose"><option value="intro">แนะนำตัว / รับ Lead ใหม่</option><option value="qt_sent">แจ้งส่งใบเสนอราคาแล้ว</option><option value="followup">Follow up QT</option><option value="progress">อัพเดทความคืบหน้า</option><option value="invoice">แจ้งส่ง Invoice</option></select></div><div class="field"><label>รายละเอียด</label><textarea id="f_detail" placeholder="ส่ง QT มูลค่า 200,000 บาท งานระบบไฟฟ้า..."></textarea></div><div class="field"><label>โทน</label><select id="f_tone"><option>สุภาพ เป็นมืออาชีพ</option><option>เป็นกันเอง แต่มืออาชีพ</option><option>เป็นทางการ</option></select></div></div><button class="gen-btn" id="gen-btn" onclick="callAI('email')">เขียน Email ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Email — พร้อมส่ง</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
+    c.innerHTML=`<div class="form-card"><div class="form-card-title">✉️ Email AI (Gemini)</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>จุดประสงค์</label><select id="f_purpose"><option value="intro">แนะนำตัว / รับ Lead ใหม่</option><option value="qt_sent">แจ้งส่งใบเสนอราคาแล้ว</option><option value="followup">Follow up QT</option><option value="progress">อัพเดทความคืบหน้า</option><option value="invoice">แจ้งส่ง Invoice</option></select></div><div class="field"><label>รายละเอียด</label><textarea id="f_detail" placeholder="ส่ง QT มูลค่า 200,000 บาท..."></textarea></div><div class="field"><label>โทน</label><select id="f_tone"><option>สุภาพ เป็นมืออาชีพ</option><option>เป็นกันเอง แต่มืออาชีพ</option><option>เป็นทางการ</option></select></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('email')">เขียน Email ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Email — พร้อมส่ง</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
   }else if(tab==='followup'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">🔔 Follow Up AI</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>ส่ง QT ไปกี่วันแล้ว</label><input id="f_days" type="number" placeholder="3" inputmode="numeric" min="1"></div><div class="field"><label>มูลค่า QT (บาท)</label><input id="f_value" type="number" placeholder="250000" inputmode="numeric"></div><div class="field"><label>ช่องทาง</label><select id="f_channel"><option>Line</option><option>Email</option><option>โทรศัพท์ (script)</option></select></div></div><button class="gen-btn" id="gen-btn" onclick="callAI('followup')">สร้าง Follow Up ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Follow Up — พร้อมส่ง</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
+    c.innerHTML=`<div class="form-card"><div class="form-card-title">🔔 Follow Up AI (Gemini)</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>ส่ง QT ไปกี่วันแล้ว</label><input id="f_days" type="number" placeholder="3" inputmode="numeric" min="1"></div><div class="field"><label>มูลค่า QT (บาท)</label><input id="f_value" type="number" placeholder="250000" inputmode="numeric"></div><div class="field"><label>ช่องทาง</label><select id="f_channel"><option>Line</option><option>Email</option><option>โทรศัพท์ (script)</option></select></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('followup')">สร้าง Follow Up ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Follow Up — พร้อมส่ง</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
   }else if(tab==='contract'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">📜 สัญญา AI</div><div class="field"><label>ชื่อผู้ว่าจ้าง</label><input id="f_customer" placeholder="คุณสมชาย / บริษัท เอบีซี"></div><div class="field"><label>ที่อยู่ผู้ว่าจ้าง</label><textarea id="f_addr" placeholder="บ้านเลขที่..."></textarea></div><div class="field"><label>ชื่องาน / โปรเจค</label><input id="f_project" placeholder="ก่อสร้างอาคาร 3 ชั้น"></div><div class="field"><label>มูลค่างาน (บาท)</label><input id="f_value" type="number" placeholder="500000" inputmode="numeric"></div><div class="field"><label>ระยะเวลาแล้วเสร็จ</label><input id="f_duration" placeholder="90 วันนับจากวันเริ่มงาน"></div><div class="field"><label>scope งาน (ย่อ ๆ)</label><textarea id="f_scope" placeholder="ระบบไฟฟ้า, ระบบประปา, งานฝ้า..."></textarea></div></div><button class="gen-btn" id="gen-btn" onclick="callAI('contract')">ร่างสัญญาด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">สัญญาว่าจ้าง — Draft</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
+    c.innerHTML=`<div class="form-card"><div class="form-card-title">📜 สัญญา AI (Gemini)</div><div class="field"><label>ชื่อผู้ว่าจ้าง</label><input id="f_customer" placeholder="คุณสมชาย / บริษัท เอบีซี"></div><div class="field"><label>ที่อยู่ผู้ว่าจ้าง</label><textarea id="f_addr" placeholder="บ้านเลขที่..."></textarea></div><div class="field"><label>ชื่องาน / โปรเจค</label><input id="f_project" placeholder="ก่อสร้างอาคาร 3 ชั้น"></div><div class="field"><label>มูลค่างาน (บาท)</label><input id="f_value" type="number" placeholder="500000" inputmode="numeric"></div><div class="field"><label>ระยะเวลาแล้วเสร็จ</label><input id="f_duration" placeholder="90 วันนับจากวันเริ่มงาน"></div><div class="field"><label>scope งาน (ย่อ ๆ)</label><textarea id="f_scope" placeholder="ระบบไฟฟ้า, ระบบประปา..."></textarea></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('contract')">ร่างสัญญาด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">สัญญาว่าจ้าง — Draft</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
   }
 }
 function addRow(){const w=document.getElementById('items-wrap');const i=itemCount++;const r=document.createElement('div');r.className='item-row';r.innerHTML=`<input placeholder="รายการงาน" id="d${i}"><input type="number" value="1" id="q${i}" min="1"><input type="number" placeholder="0" id="p${i}" min="0">`;w.appendChild(r);}
@@ -178,36 +179,44 @@ function genHandover(){
   document.getElementById('result-card').classList.add('visible');
   document.getElementById('result-card').scrollIntoView({behavior:'smooth',block:'start'});
 }
-async function callAI(type){
+async function callGemini(type){
   const btn=document.getElementById('gen-btn');
   btn.disabled=true;btn.innerHTML='<div class="spinner"></div> กำลังสร้าง...';
   const purposes={intro:'แนะนำตัวและรับ Lead ใหม่',qt_sent:'แจ้งส่งใบเสนอราคาแล้ว',followup:'follow up QT',progress:'อัพเดทความคืบหน้า',invoice:'แจ้งส่ง Invoice'};
   let prompt='';
-  if(type==='scope'){const wt=v('f_worktype'),bl=v('f_building'),ar=v('f_area'),ex=v('f_extra');prompt=`เขียน scope งาน${wt} สำหรับ${bl||'อาคาร'}${ar?` พื้นที่ ${ar} ตร.ม.`:''}${ex?`\nข้อมูลเพิ่มเติม: ${ex}`:''}
-ในนามบริษัท สิงห์วิท จำกัด ตอบ 3 ส่วน:
+  const sys='คุณคือ AI assistant ของ บริษัท สิงห์วิท จำกัด ธุรกิจออกแบบก่อสร้างและระบบอาคาร ตอบภาษาไทย กระชับ มืออาชีพ output พร้อมใช้เลย';
+  if(type==='scope'){const wt=v('f_worktype'),bl=v('f_building'),ar=v('f_area'),ex=v('f_extra');prompt=`${sys}\n\nเขียน scope งาน${wt} สำหรับ${bl||'อาคาร'}${ar?` พื้นที่ ${ar} ตร.ม.`:''}${ex?`\nข้อมูลเพิ่มเติม: ${ex}`:''}
+ตอบ 3 ส่วน:
 1. ขอบเขตงานที่รวม (5-7 bullet)
 2. สิ่งที่ไม่รวมในราคา (3-5 bullet)
-3. เงื่อนไขสำคัญ (2 ข้อ)
-ภาษาไทย กระชับ มืออาชีพ`;}
-  else if(type==='email'){const cust=v('f_customer')||'ลูกค้า',purpose=v('f_purpose'),detail=v('f_detail'),tone=v('f_tone');prompt=`เขียน email ถึงคุณ${cust} เรื่อง: ${purposes[purpose]||purpose}${detail?`\nรายละเอียด: ${detail}`:''}
+3. เงื่อนไขสำคัญ (2 ข้อ)`;}
+  else if(type==='email'){const cust=v('f_customer')||'ลูกค้า',purpose=v('f_purpose'),detail=v('f_detail'),tone=v('f_tone');prompt=`${sys}\n\nเขียน email ถึงคุณ${cust} เรื่อง: ${purposes[purpose]||purpose}${detail?`\nรายละเอียด: ${detail}`:''}
 โทน: ${tone} จาก: บริษัท สิงห์วิท จำกัด โทร 063-847-7696
-ตอบเฉพาะ email พร้อมใช้ ภาษาไทย ไม่เกิน 6 บรรทัด`;}
-  else if(type==='followup'){const cust=v('f_customer')||'ลูกค้า',days=v('f_days')||'3',val=v('f_value'),ch=v('f_channel');prompt=`เขียนข้อความ follow up ${ch} ถึงคุณ${cust}
+ตอบเฉพาะ email พร้อมใช้ ไม่เกิน 6 บรรทัด`;}
+  else if(type==='followup'){const cust=v('f_customer')||'ลูกค้า',days=v('f_days')||'3',val=v('f_value'),ch=v('f_channel');prompt=`${sys}\n\nเขียนข้อความ follow up ${ch} ถึงคุณ${cust}
 ส่ง QT ไปแล้ว ${days} วัน${val?` มูลค่า ${Number(val).toLocaleString()} บาท`:''} ยังไม่ได้รับคำตอบ
 จาก บริษัท สิงห์วิท จำกัด เป็นมิตร ไม่กดดัน ไม่เกิน 4 ประโยค พร้อมส่งเลย`;}
-  else if(type==='contract'){const cust=v('f_customer')||'ผู้ว่าจ้าง',addr=v('f_addr'),proj=v('f_project'),val=v('f_value'),dur=v('f_duration')||'90 วัน',scope=v('f_scope');prompt=`ร่างสัญญาว่าจ้างงานก่อสร้าง/ระบบอาคาร
+  else if(type==='contract'){const cust=v('f_customer')||'ผู้ว่าจ้าง',addr=v('f_addr'),proj=v('f_project'),val=v('f_value'),dur=v('f_duration')||'90 วัน',scope=v('f_scope');prompt=`${sys}\n\nร่างสัญญาว่าจ้างงานก่อสร้าง/ระบบอาคาร
 ผู้รับจ้าง: บริษัท สิงห์วิท จำกัด เลขภาษี 0135565012570
 ผู้ว่าจ้าง: ${cust}${addr?` ที่อยู่: ${addr}`:''}
 งาน: ${proj||'—'}${val?` มูลค่า: ${Number(val).toLocaleString()} บาท`:''} ระยะเวลา: ${dur}${scope?`\nscope: ${scope}`:''}
 ร่างสัญญาภาษาไทย ครอบคลุม: scope, ราคา, งวด 70/30, ระยะเวลา, รับประกัน 1 ปี, ยกเลิกสัญญา`;}
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'คุณคือ AI assistant ของ บริษัท สิงห์วิท จำกัด ตอบภาษาไทย กระชับ มืออาชีพ output พร้อมใช้เลย',messages:[{role:'user',content:prompt}]})});
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:1024}})
+    });
     const data=await res.json();
-    const text=data.content?.[0]?.text||(data.error?.message?`Error: ${data.error.message}`:'ไม่สามารถสร้างได้');
-    document.getElementById('result-body').innerHTML=`<div class="result-body">${text.replace(/\n/g,'<br>')}</div>`;
+    if(data.error){throw new Error(data.error.message);}
+    const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'ไม่สามารถสร้างได้ กรุณาลองใหม่';
+    document.getElementById('result-body').innerHTML=`<div class="result-body">${text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
     document.getElementById('result-card').classList.add('visible');
     document.getElementById('result-card').scrollIntoView({behavior:'smooth',block:'start'});
-  }catch(e){document.getElementById('result-body').innerHTML=`<div class="result-body" style="color:#B5383A">Error: ${e.message}</div>`;document.getElementById('result-card').classList.add('visible');}
+  }catch(e){
+    document.getElementById('result-body').innerHTML=`<div class="result-body" style="color:#B5383A">Error: ${e.message}</div>`;
+    document.getElementById('result-card').classList.add('visible');
+  }
   btn.disabled=false;
   const lbls={scope:'สร้าง Scope ด้วย AI',email:'เขียน Email ด้วย AI',followup:'สร้าง Follow Up ด้วย AI',contract:'ร่างสัญญาด้วย AI'};
   btn.innerHTML=lbls[type]||'สร้างด้วย AI';
