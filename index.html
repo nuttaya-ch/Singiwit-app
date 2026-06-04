@@ -4,224 +4,293 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>สิงห์วิท AI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-:root{--bg:#F8F7F4;--surface:#FFFFFF;--surface2:#F2F1EE;--border:#E4E2DC;--border2:#D0CEC6;--text:#1A1916;--text2:#6B6860;--text3:#A8A69F;--accent-bg:#1A1916;--accent-text:#F8F7F4;--green:#2D6A4F;--green-bg:#EAF4EE;--red:#B5383A;--blue:#1D4E89;--blue-bg:#EAF0F9;--radius:10px;--radius-sm:6px;}
+:root{--bg:#F8F7F4;--surface:#fff;--surface2:#F2F1EE;--border:#E4E2DC;--border2:#D0CEC6;--text:#1A1916;--text2:#6B6860;--text3:#A8A69F;--accent:#7A0020;--accent2:#5C0018;--accent-text:#fff;--green:#2D6A4F;--green-bg:#EAF4EE;--blue:#1D4E89;--blue-bg:#EAF0F9;--r:10px;--rs:6px;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);font-size:15px;}
-#setup-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--bg);}
-.setup-card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px;}
-.setup-logo{font-size:12px;font-weight:600;letter-spacing:0.12em;color:var(--text3);margin-bottom:24px;}
-.setup-title{font-size:22px;font-weight:600;color:var(--text);margin-bottom:6px;}
-.setup-sub{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.6;}
-.setup-label{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px;display:block;}
-.setup-input{width:100%;padding:12px 14px;border:1px solid var(--border2);border-radius:var(--radius-sm);font-family:'IBM Plex Mono',monospace;font-size:13px;background:var(--surface2);color:var(--text);margin-bottom:8px;}
-.setup-input:focus{outline:none;border-color:var(--text);}
-.setup-hint{font-size:12px;color:var(--text3);margin-bottom:24px;line-height:1.6;}
-.setup-hint a{color:var(--blue);}
-.setup-btn{width:100%;padding:14px;background:var(--accent-bg);color:var(--accent-text);border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;font-family:'Sarabun',sans-serif;cursor:pointer;}
-.free-badge{display:inline-block;background:var(--green-bg);color:var(--green);font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;margin-bottom:16px;}
-.setup-steps{margin-top:28px;border-top:1px solid var(--border);padding-top:20px;}
-.setup-steps-title{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:12px;}
-.step-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;}
-.step-num{width:22px;height:22px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--text2);flex-shrink:0;margin-top:1px;}
-.step-text{font-size:13px;color:var(--text2);line-height:1.5;}
-.step-text strong{color:var(--text);font-weight:500;}
-.step-text code{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:3px;border:1px solid var(--border);}
-#app-screen{display:none;min-height:100vh;flex-direction:column;}
-#app-screen.active{display:flex;}
-.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.app-header-left{display:flex;align-items:center;gap:10px;}
-.app-logo-mark{width:28px;height:28px;background:var(--accent-bg);border-radius:6px;display:flex;align-items:center;justify-content:center;}
-.app-logo-mark svg{width:16px;height:16px;fill:var(--accent-text);}
-.app-logo-text{font-size:14px;font-weight:600;color:var(--text);}
-.app-logo-sub{font-size:11px;color:var(--text3);}
-.api-status{font-size:11px;padding:4px 10px;border-radius:20px;background:var(--green-bg);color:var(--green);font-weight:500;cursor:pointer;}
-.nav-tabs{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px;}
-.nav-tabs::-webkit-scrollbar{display:none;}
-.nav-tab{flex-shrink:0;padding:11px 14px;font-size:13px;font-weight:400;color:var(--text2);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;font-family:'Sarabun',sans-serif;white-space:nowrap;}
-.nav-tab.active{color:var(--text);font-weight:500;border-bottom-color:var(--text);}
-.main-content{flex:1;padding:16px;max-width:600px;margin:0 auto;width:100%;}
-.form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
-.form-card-title{font-size:13px;font-weight:500;color:var(--text2);margin-bottom:14px;}
-.field{margin-bottom:12px;}
-.field label{font-size:12px;font-weight:500;color:var(--text2);display:block;margin-bottom:5px;}
-.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:14px;font-family:'Sarabun',sans-serif;background:var(--surface);color:var(--text);-webkit-appearance:none;}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--text);}
-.field textarea{resize:vertical;min-height:72px;line-height:1.5;}
-.items-box{border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;}
-.items-head{display:grid;grid-template-columns:1fr 56px 80px;gap:1px;background:var(--border);}
-.items-head span{background:var(--surface2);padding:6px 8px;font-size:11px;font-weight:500;color:var(--text2);}
-.item-row{display:grid;grid-template-columns:1fr 56px 80px;gap:1px;background:var(--border);}
-.item-row input{border:none;border-radius:0;padding:9px 8px;font-size:13px;background:var(--surface);}
+.app{display:flex;flex-direction:column;min-height:100vh;}
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo-wrap{display:flex;align-items:center;gap:10px;}
+.logo-svg{width:44px;height:22px;}
+.logo-text{font-size:14px;font-weight:600;color:var(--text);}
+.logo-sub{font-size:10px;color:var(--text3);}
+.api-dot{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--green-bg);color:var(--green);font-weight:500;}
+.nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{flex-shrink:0;padding:10px 13px;font-size:13px;color:var(--text2);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;font-family:'Sarabun',sans-serif;white-space:nowrap;}
+.nav-btn.active{color:var(--text);font-weight:500;border-bottom-color:var(--accent);}
+.main{flex:1;padding:16px;max-width:640px;margin:0 auto;width:100%;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.card-title{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:12px;}
+.field{margin-bottom:10px;}
+.field label{font-size:11px;font-weight:500;color:var(--text2);display:block;margin-bottom:4px;}
+.field input,.field select,.field textarea{width:100%;padding:9px 11px;border:1px solid var(--border2);border-radius:var(--rs);font-size:14px;font-family:'Sarabun',sans-serif;background:var(--surface);color:var(--text);-webkit-appearance:none;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);}
+.field textarea{resize:vertical;min-height:68px;line-height:1.5;}
+.items-box{border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;}
+.items-head{display:grid;grid-template-columns:1fr 52px 78px;gap:1px;background:var(--border);}
+.items-head span{background:var(--surface2);padding:5px 7px;font-size:10px;font-weight:500;color:var(--text2);}
+.item-row{display:grid;grid-template-columns:1fr 52px 78px;gap:1px;background:var(--border);}
+.item-row input{border:none;border-radius:0;padding:8px 7px;font-size:13px;background:var(--surface);}
 .item-row input:focus{background:var(--blue-bg);outline:none;}
-.add-row-btn{width:100%;padding:9px;border:none;background:var(--surface2);color:var(--text2);font-size:13px;font-family:'Sarabun',sans-serif;cursor:pointer;text-align:center;border-top:1px solid var(--border);}
-.gen-btn{width:100%;padding:15px;background:var(--accent-bg);color:var(--accent-text);border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:500;font-family:'Sarabun',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;}
+.add-btn{width:100%;padding:8px;border:none;background:var(--surface2);color:var(--text2);font-size:12px;font-family:'Sarabun',sans-serif;cursor:pointer;border-top:1px solid var(--border);}
+.gen-btn{width:100%;padding:14px;background:var(--accent);color:var(--accent-text);border:none;border-radius:var(--rs);font-size:15px;font-weight:500;font-family:'Sarabun',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;transition:background 0.15s;}
+.gen-btn:hover{background:var(--accent2);}
 .gen-btn:disabled{opacity:0.4;cursor:not-allowed;}
-.gen-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;}
+.spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;display:none;}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:12px;display:none;}
 .result-card.visible{display:block;}
-.result-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface2);}
-.result-title{font-size:13px;font-weight:500;color:var(--text);}
-.result-btn{padding:6px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface);font-size:12px;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;}
-.result-body{padding:16px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;}
-.doc-preview{padding:16px;font-size:12.5px;}
-.doc-co{font-size:13px;font-weight:600;color:var(--text);}
-.doc-co-sub{font-size:11px;color:var(--text2);margin-top:2px;}
-.doc-type-badge{display:inline-block;padding:3px 10px;background:var(--accent-bg);color:var(--accent-text);border-radius:4px;font-size:11px;font-weight:500;margin-top:10px;margin-bottom:10px;font-family:'IBM Plex Mono',monospace;}
-.doc-divider{border:none;border-top:1px solid var(--border);margin:10px 0;}
-.doc-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-.doc-meta-item .k{font-size:11px;color:var(--text3);}
-.doc-meta-item .v{font-size:12.5px;font-weight:500;color:var(--text);}
-.doc-table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px;}
-.doc-table th{background:var(--surface2);padding:6px 7px;text-align:left;font-weight:500;color:var(--text2);border:1px solid var(--border);font-size:11px;}
-.doc-table td{padding:6px 7px;border:1px solid var(--border);color:var(--text);vertical-align:top;}
-.doc-totals{margin-left:auto;max-width:200px;}
-.doc-total-row{display:flex;justify-content:space-between;padding:3px 0;font-size:12px;color:var(--text2);}
-.doc-total-row.final{font-weight:600;font-size:13px;color:var(--text);border-top:1px solid var(--border2);padding-top:6px;margin-top:3px;}
-.doc-terms{font-size:11px;color:var(--text2);margin-top:10px;padding-top:8px;border-top:1px solid var(--border);line-height:1.6;}
+.result-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface2);}
+.result-title{font-size:12px;font-weight:500;color:var(--text);}
+.result-actions{display:flex;gap:6px;}
+.act-btn{padding:5px 10px;border:1px solid var(--border2);border-radius:var(--rs);background:var(--surface);font-size:11px;color:var(--text2);cursor:pointer;font-family:'Sarabun',sans-serif;display:flex;align-items:center;gap:4px;}
+.act-btn:hover{background:var(--surface2);}
+.act-btn.dl{background:var(--accent);color:#fff;border-color:var(--accent);}
+.act-btn.dl:hover{background:var(--accent2);}
+.result-body{padding:14px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+/* DOC STYLES */
+.doc{padding:16px;font-size:12px;}
+.doc-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.doc-logo{width:52px;height:26px;}
+.doc-co-name{font-size:12px;font-weight:600;color:var(--text);margin-top:4px;}
+.doc-co-sub{font-size:10px;color:var(--text2);margin-top:1px;}
+.doc-badge{display:inline-block;padding:3px 10px;background:var(--accent);color:#fff;border-radius:3px;font-size:10px;font-weight:600;font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;}
+.doc-num{font-size:10px;color:var(--text2);margin-top:3px;font-family:'IBM Plex Mono',monospace;}
+.doc-divider{border:none;border-top:1px solid var(--border);margin:8px 0;}
+.doc-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
+.doc-meta-item .k{font-size:10px;color:var(--text3);}
+.doc-meta-item .v{font-size:12px;font-weight:500;color:var(--text);}
+.doc-table{width:100%;border-collapse:collapse;margin-bottom:8px;font-size:11px;}
+.doc-table th{background:var(--surface2);padding:5px 6px;text-align:left;font-weight:500;color:var(--text2);border:1px solid var(--border);}
+.doc-table td{padding:5px 6px;border:1px solid var(--border);color:var(--text);}
+.doc-totals{margin-left:auto;max-width:180px;}
+.doc-tr{display:flex;justify-content:space-between;padding:2px 0;font-size:11px;color:var(--text2);}
+.doc-tr.final{font-weight:600;font-size:12px;color:var(--text);border-top:1px solid var(--border2);padding-top:5px;margin-top:2px;}
+.doc-terms{font-size:10px;color:var(--text2);margin-top:8px;padding-top:6px;border-top:1px solid var(--border);line-height:1.6;}
 .doc-terms strong{color:var(--text);}
-.doc-sigs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:var(--text2);}
-.copy-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--accent-text);padding:10px 20px;border-radius:20px;font-size:13px;transition:transform 0.25s;z-index:999;}
-.copy-toast.show{transform:translateX(-50%) translateY(0);}
-@media(max-width:380px){.main-content{padding:12px;}.form-card{padding:14px;}.doc-meta{grid-template-columns:1fr;}}
+.doc-sigs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);text-align:center;font-size:10px;color:var(--text2);}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#fff;padding:9px 18px;border-radius:20px;font-size:13px;transition:transform 0.2s;z-index:999;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+@media(max-width:400px){.main{padding:12px;}.card{padding:12px;}.doc-meta{grid-template-columns:1fr;}}
+@media print{.app-header,.nav,.gen-btn,.result-head{display:none!important;}.result-card{display:block!important;border:none;}}
 </style>
 </head>
 <body>
-<div id="setup-screen">
-  <div class="setup-card">
-    <div class="setup-logo">SINGHWIT AI</div>
-    <div class="free-badge">✓ ฟรี 100% ไม่มีค่าใช้จ่าย</div>
-    <div class="setup-title">ยินดีต้อนรับ</div>
-    <div class="setup-sub">ใส่ Gemini API Key เพื่อเปิดใช้งาน<br>ฟรี 1,500 ครั้ง/วัน ไม่ต้องใส่บัตรเครดิต</div>
-    <label class="setup-label">Gemini API Key</label>
-    <input type="password" class="setup-input" id="api-key-input" placeholder="AIza...">
-    <div class="setup-hint">รับ Key ฟรีได้ที่ <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> → API Keys → Copy<br>Key เก็บในอุปกรณ์นี้เท่านั้น ไม่มีการส่งออก</div>
-    <button class="setup-btn" onclick="saveApiKey()">เริ่มใช้งาน →</button>
-    <div class="setup-steps">
-      <div class="setup-steps-title">วิธีรับ Key (มีอยู่แล้ว copy ได้เลย)</div>
-      <div class="step-item"><div class="step-num">1</div><div class="step-text">ไปที่ <strong>aistudio.google.com</strong></div></div>
-      <div class="step-item"><div class="step-num">2</div><div class="step-text">เมนูซ้าย <strong>API Keys</strong></div></div>
-      <div class="step-item"><div class="step-num">3</div><div class="step-text">กดไอคอน copy ที่บรรทัด key แล้ววางที่นี่</div></div>
-    </div>
-  </div>
-</div>
-<div id="app-screen">
+<div class="app">
   <div class="app-header">
-    <div class="app-header-left">
-      <div class="app-logo-mark"><svg viewBox="0 0 16 16"><path d="M8 1L14 4.5V11.5L8 15L2 11.5V4.5L8 1Z"/></svg></div>
-      <div><div class="app-logo-text">สิงห์วิท AI</div><div class="app-logo-sub">powered by Gemini • ฟรี</div></div>
+    <div class="logo-wrap">
+      <svg class="logo-svg" viewBox="0 0 88 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 8C0 3.582 3.582 0 8 0H28L14 44H8C3.582 44 0 40.418 0 36V8Z" fill="#7A0020"/>
+        <path d="M28 0L42 0L14 44L0 44L28 0Z" fill="#7A0020"/>
+        <path d="M14 0H28L42 44H28L14 0Z" fill="#F8F7F4"/>
+        <rect x="46" y="0" width="12" height="36" rx="0" fill="#7A0020"/>
+        <path d="M46 36H58C58 40.418 54.418 44 50 44C47.791 44 46 42.209 46 40V36Z" fill="#7A0020"/>
+        <rect x="62" y="0" width="12" height="36" rx="0" fill="#7A0020"/>
+        <path d="M62 36H74C74 40.418 70.418 44 66 44C63.791 44 62 42.209 62 40V36Z" fill="#7A0020"/>
+        <rect x="78" y="0" width="10" height="36" rx="4" fill="#7A0020"/>
+        <path d="M78 36H88C88 40.418 84.418 44 80 44C78.895 44 78 43.105 78 42V36Z" fill="#7A0020"/>
+      </svg>
+      <div>
+        <div class="logo-text">สิงห์วิท AI</div>
+        <div class="logo-sub">powered by Gemini • ฟรี</div>
+      </div>
     </div>
-    <div class="api-status" onclick="resetKey()">● เชื่อมต่อแล้ว</div>
+    <div class="api-dot">● พร้อมใช้</div>
   </div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="switchTab(this,'qt')">ใบเสนอราคา</button>
-    <button class="nav-tab" onclick="switchTab(this,'invoice')">ใบแจ้งหนี้</button>
-    <button class="nav-tab" onclick="switchTab(this,'handover')">ใบรับมอบงาน</button>
-    <button class="nav-tab" onclick="switchTab(this,'scope')">Scope AI</button>
-    <button class="nav-tab" onclick="switchTab(this,'email')">Email AI</button>
-    <button class="nav-tab" onclick="switchTab(this,'followup')">Follow Up AI</button>
-    <button class="nav-tab" onclick="switchTab(this,'contract')">สัญญา AI</button>
+  <div class="nav" id="nav">
+    <button class="nav-btn active" onclick="sw(this,'qt')">ใบเสนอราคา</button>
+    <button class="nav-btn" onclick="sw(this,'invoice')">ใบแจ้งหนี้</button>
+    <button class="nav-btn" onclick="sw(this,'handover')">ใบรับมอบงาน</button>
+    <button class="nav-btn" onclick="sw(this,'scope')">Scope AI</button>
+    <button class="nav-btn" onclick="sw(this,'email')">Email AI</button>
+    <button class="nav-btn" onclick="sw(this,'followup')">Follow Up AI</button>
+    <button class="nav-btn" onclick="sw(this,'contract')">สัญญา AI</button>
   </div>
-  <div class="main-content" id="main-content"></div>
+  <div class="main" id="main"></div>
 </div>
-<div class="copy-toast" id="copy-toast">คัดลอกแล้ว ✓</div>
+<div class="toast" id="toast">คัดลอกแล้ว ✓</div>
+
 <script>
+const KEY='AIzaSyC78Nrb9Ogk9RgwZ9Hs-OERjrfBQcgOQNg';
 const CO={name:'บริษัท สิงห์วิท จำกัด',tag:'ออกแบบ ก่อสร้าง และดูแลงานระบบอาคารครบวงจร',tax:'0135565012570',tel:'063-847-7696'};
-let API_KEY='',itemCount=2;
-function saveApiKey(){const k=document.getElementById('api-key-input').value.trim();if(!k||!k.startsWith('AIza')){alert('กรุณาใส่ Gemini API Key ที่ถูกต้อง (ขึ้นต้นด้วย AIza)');return;}API_KEY=k;localStorage.setItem('sw_gemini_key',k);document.getElementById('setup-screen').style.display='none';document.getElementById('app-screen').classList.add('active');renderTab('qt');}
-function resetKey(){if(confirm('ต้องการเปลี่ยน API Key?')){localStorage.removeItem('sw_gemini_key');location.reload();}}
-window.onload=function(){const s=localStorage.getItem('sw_gemini_key');if(s){API_KEY=s;document.getElementById('setup-screen').style.display='none';document.getElementById('app-screen').classList.add('active');renderTab('qt');}};
-function switchTab(btn,tab){document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');itemCount=2;renderTab(tab);}
-function today(){return new Date().toISOString().split('T')[0];}
-function thaiDate(d){if(!d)return'';return new Date(d).toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});}
-function fmtMoney(n){return Number(n).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function genNum(p){const n=new Date();const ymd=`${n.getFullYear()}${String(n.getMonth()+1).padStart(2,'0')}${String(n.getDate()).padStart(2,'0')}`;return`${p}${ymd}-${String(Math.floor(Math.random()*900)+100)}`;}
-function v(id){const el=document.getElementById(id);return el?el.value:'';}
-function renderTab(tab){
-  const c=document.getElementById('main-content');
-  if(tab==='qt'||tab==='invoice'){
-    const isQT=tab==='qt',lbl=isQT?'ใบเสนอราคา':'ใบแจ้งหนี้';
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">${isQT?'📋':'🧾'} ข้อมูล${lbl}</div><div class="field"><label>ชื่อลูกค้า / บริษัท</label><input id="f_customer" placeholder="คุณสมชาย / บริษัท เอบีซี"></div><div class="field"><label>เบอร์โทรลูกค้า</label><input id="f_tel" placeholder="08x-xxx-xxxx" type="tel"></div><div class="field"><label>ชื่อโปรเจค</label><input id="f_project" placeholder="ติดตั้งระบบไฟฟ้าอาคาร A"></div><div class="field"><label>วันที่ออกเอกสาร</label><input id="f_date" type="date" value="${today()}"></div></div><div class="form-card"><div class="form-card-title">📦 รายการ</div><div class="items-box"><div class="items-head"><span>รายละเอียด</span><span>จำนวน</span><span>ราคา/หน่วย</span></div><div id="items-wrap"><div class="item-row"><input placeholder="รายการงาน" id="d0"><input type="number" value="1" id="q0" min="1"><input type="number" placeholder="0" id="p0" min="0"></div><div class="item-row"><input placeholder="รายการงาน" id="d1"><input type="number" value="1" id="q1" min="1"><input type="number" placeholder="0" id="p1" min="0"></div></div><button class="add-row-btn" onclick="addRow()">+ เพิ่มรายการ</button></div></div><div class="form-card"><div class="form-card-title">📝 หมายเหตุ</div><div class="field"><textarea id="f_note" placeholder="เงื่อนไขพิเศษ..."></textarea></div></div><button class="gen-btn" id="gen-btn" onclick="genDoc('${tab}')">สร้าง${lbl}</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">${lbl} — พร้อมใช้</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div id="result-body"></div></div>`;
-  }else if(tab==='handover'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">✅ ใบรับมอบงาน</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>ชื่อโปรเจค</label><input id="f_project" placeholder="ติดตั้งระบบไฟฟ้า"></div><div class="field"><label>วันที่ส่งมอบ</label><input id="f_date" type="date" value="${today()}"></div><div class="field"><label>รายการ (แยกบรรทัด)</label><textarea id="f_items" placeholder="ระบบไฟฟ้าชั้น 1&#10;ระบบไฟฟ้าชั้น 2" style="min-height:90px"></textarea></div><div class="field"><label>การรับประกัน</label><input id="f_warranty" value="1 ปี นับจากวันส่งมอบ"></div></div><button class="gen-btn" id="gen-btn" onclick="genHandover()">สร้างใบรับมอบงาน</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">ใบรับมอบงาน</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div id="result-body"></div></div>`;
-  }else if(tab==='scope'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">🤖 Scope งาน AI (Gemini)</div><div class="field"><label>ประเภทงาน</label><select id="f_worktype"><option>ระบบไฟฟ้า</option><option>ระบบประปา</option><option>ระบบปรับอากาศ</option><option>ก่อสร้างอาคาร</option><option>ระบบดับเพลิง</option><option>งานครบวงจร</option></select></div><div class="field"><label>ประเภทอาคาร</label><input id="f_building" placeholder="โรงงาน / สำนักงาน / บ้าน"></div><div class="field"><label>พื้นที่ (ตร.ม.)</label><input id="f_area" type="number" placeholder="500" inputmode="numeric"></div><div class="field"><label>ข้อมูลเพิ่มเติม</label><textarea id="f_extra" placeholder="อาคาร 3 ชั้น, ห้องเซิร์ฟเวอร์..."></textarea></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('scope')">สร้าง Scope ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Scope — พร้อมใส่ QT</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
-  }else if(tab==='email'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">✉️ Email AI (Gemini)</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>จุดประสงค์</label><select id="f_purpose"><option value="intro">แนะนำตัว / รับ Lead ใหม่</option><option value="qt_sent">แจ้งส่งใบเสนอราคาแล้ว</option><option value="followup">Follow up QT</option><option value="progress">อัพเดทความคืบหน้า</option><option value="invoice">แจ้งส่ง Invoice</option></select></div><div class="field"><label>รายละเอียด</label><textarea id="f_detail" placeholder="ส่ง QT มูลค่า 200,000 บาท..."></textarea></div><div class="field"><label>โทน</label><select id="f_tone"><option>สุภาพ เป็นมืออาชีพ</option><option>เป็นกันเอง แต่มืออาชีพ</option><option>เป็นทางการ</option></select></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('email')">เขียน Email ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Email — พร้อมส่ง</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
-  }else if(tab==='followup'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">🔔 Follow Up AI (Gemini)</div><div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div><div class="field"><label>ส่ง QT ไปกี่วันแล้ว</label><input id="f_days" type="number" placeholder="3" inputmode="numeric" min="1"></div><div class="field"><label>มูลค่า QT (บาท)</label><input id="f_value" type="number" placeholder="250000" inputmode="numeric"></div><div class="field"><label>ช่องทาง</label><select id="f_channel"><option>Line</option><option>Email</option><option>โทรศัพท์ (script)</option></select></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('followup')">สร้าง Follow Up ด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">Follow Up — พร้อมส่ง</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
-  }else if(tab==='contract'){
-    c.innerHTML=`<div class="form-card"><div class="form-card-title">📜 สัญญา AI (Gemini)</div><div class="field"><label>ชื่อผู้ว่าจ้าง</label><input id="f_customer" placeholder="คุณสมชาย / บริษัท เอบีซี"></div><div class="field"><label>ที่อยู่ผู้ว่าจ้าง</label><textarea id="f_addr" placeholder="บ้านเลขที่..."></textarea></div><div class="field"><label>ชื่องาน / โปรเจค</label><input id="f_project" placeholder="ก่อสร้างอาคาร 3 ชั้น"></div><div class="field"><label>มูลค่างาน (บาท)</label><input id="f_value" type="number" placeholder="500000" inputmode="numeric"></div><div class="field"><label>ระยะเวลาแล้วเสร็จ</label><input id="f_duration" placeholder="90 วันนับจากวันเริ่มงาน"></div><div class="field"><label>scope งาน (ย่อ ๆ)</label><textarea id="f_scope" placeholder="ระบบไฟฟ้า, ระบบประปา..."></textarea></div></div><button class="gen-btn" id="gen-btn" onclick="callGemini('contract')">ร่างสัญญาด้วย AI</button><div class="result-card" id="result-card"><div class="result-header"><div class="result-title">สัญญาว่าจ้าง — Draft</div><div><button class="result-btn" onclick="copyResult()">คัดลอก</button></div></div><div class="result-body" id="result-body"></div></div>`;
-  }
+let ic=2;
+const LOGO_SVG=`<svg width="52" height="26" viewBox="0 0 88 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 8C0 3.582 3.582 0 8 0H28L14 44H8C3.582 44 0 40.418 0 36V8Z" fill="#7A0020"/><path d="M28 0L42 0L14 44L0 44L28 0Z" fill="#7A0020"/><path d="M14 0H28L42 44H28L14 0Z" fill="#F8F7F4"/><rect x="46" y="0" width="12" height="36" fill="#7A0020"/><path d="M46 36H58C58 40.418 54.418 44 50 44C47.791 44 46 42.209 46 40V36Z" fill="#7A0020"/><rect x="62" y="0" width="12" height="36" fill="#7A0020"/><path d="M62 36H74C74 40.418 70.418 44 66 44C63.791 44 62 42.209 62 40V36Z" fill="#7A0020"/><rect x="78" y="0" width="10" height="36" rx="4" fill="#7A0020"/><path d="M78 36H88C88 40.418 84.418 44 80 44C78.895 44 78 43.105 78 42V36Z" fill="#7A0020"/></svg>`;
+
+function sw(btn,tab){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');ic=2;render(tab);}
+function td(){return new Date().toISOString().split('T')[0];}
+function thd(d){if(!d)return'';return new Date(d).toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});}
+function fm(n){return Number(n).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function gn(p){const n=new Date();return`${p}${n.getFullYear()}${String(n.getMonth()+1).padStart(2,'0')}${String(n.getDate()).padStart(2,'0')}-${String(Math.floor(Math.random()*900)+100)}`;}
+function v(id){const e=document.getElementById(id);return e?e.value:'';}
+function showToast(msg='คัดลอกแล้ว ✓'){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+
+function docHeader(badge,num){
+  return`<div class="doc-header"><div><div class="doc-logo">${LOGO_SVG}</div><div class="doc-co-name">${CO.name}</div><div class="doc-co-sub">${CO.tag}</div><div class="doc-co-sub">เลขภาษี: ${CO.tax} | โทร: ${CO.tel}</div></div><div style="text-align:right"><span class="doc-badge">${badge}</span><div class="doc-num">${num}</div></div></div><hr class="doc-divider">`;
 }
-function addRow(){const w=document.getElementById('items-wrap');const i=itemCount++;const r=document.createElement('div');r.className='item-row';r.innerHTML=`<input placeholder="รายการงาน" id="d${i}"><input type="number" value="1" id="q${i}" min="1"><input type="number" placeholder="0" id="p${i}" min="0">`;w.appendChild(r);}
-function getItems(){const items=[];for(let i=0;i<itemCount;i++){const d=document.getElementById(`d${i}`),q=document.getElementById(`q${i}`),p=document.getElementById(`p${i}`);if(d&&d.value.trim())items.push({desc:d.value.trim(),qty:parseFloat(q.value)||1,price:parseFloat(p.value)||0});}return items;}
+
+function resultActions(id,filename){
+  return`<div class="result-head"><div class="result-title" id="rt_${id}">พร้อมใช้</div><div class="result-actions"><button class="act-btn" onclick="cp('${id}')">คัดลอก</button><button class="act-btn dl" onclick="dl('${id}','${filename}')">⬇ PDF</button></div></div>`;
+}
+
+function cp(id){const b=document.getElementById('rb_'+id);if(b)navigator.clipboard.writeText(b.innerText).then(()=>showToast()).catch(()=>{});}
+
+function dl(id,filename){
+  const el=document.getElementById('rb_'+id);
+  if(!el){showToast('ไม่พบเอกสาร');return;}
+  const opt={margin:[8,8,8,8],filename:filename+'.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}};
+  showToast('กำลังสร้าง PDF...');
+  html2pdf().set(opt).from(el).save().then(()=>showToast('ดาวน์โหลดแล้ว ✓'));
+}
+
+function addRow(){const w=document.getElementById('iw');const i=ic++;const r=document.createElement('div');r.className='item-row';r.innerHTML=`<input placeholder="รายการงาน" id="d${i}"><input type="number" value="1" id="q${i}" min="1"><input type="number" placeholder="0" id="p${i}" min="0">`;w.appendChild(r);}
+
+function getItems(){const a=[];for(let i=0;i<ic;i++){const d=document.getElementById('d'+i),q=document.getElementById('q'+i),p=document.getElementById('p'+i);if(d&&d.value.trim())a.push({desc:d.value.trim(),qty:parseFloat(q.value)||1,price:parseFloat(p.value)||0});}return a;}
+
+function docFormHtml(tab){
+  const isQT=tab==='qt',lbl=isQT?'ใบเสนอราคา':'ใบแจ้งหนี้';
+  return`<div class="card"><div class="card-title">${isQT?'📋':'🧾'} ข้อมูล${lbl}</div>
+    <div class="field"><label>ชื่อลูกค้า / บริษัท</label><input id="f_customer" placeholder="คุณสมชาย / บริษัท เอบีซี"></div>
+    <div class="field"><label>เบอร์โทร</label><input id="f_tel" type="tel" placeholder="08x-xxx-xxxx"></div>
+    <div class="field"><label>ชื่อโปรเจค</label><input id="f_project" placeholder="ติดตั้งระบบไฟฟ้าอาคาร A"></div>
+    <div class="field"><label>วันที่</label><input id="f_date" type="date" value="${td()}"></div></div>
+  <div class="card"><div class="card-title">📦 รายการ</div>
+    <div class="items-box"><div class="items-head"><span>รายละเอียด</span><span>จำนวน</span><span>ราคา/หน่วย</span></div>
+    <div id="iw">
+      <div class="item-row"><input placeholder="รายการงาน" id="d0"><input type="number" value="1" id="q0" min="1"><input type="number" placeholder="0" id="p0" min="0"></div>
+      <div class="item-row"><input placeholder="รายการงาน" id="d1"><input type="number" value="1" id="q1" min="1"><input type="number" placeholder="0" id="p1" min="0"></div>
+    </div>
+    <button class="add-btn" onclick="addRow()">+ เพิ่มรายการ</button></div></div>
+  <div class="card"><div class="card-title">📝 หมายเหตุ</div><div class="field"><textarea id="f_note" placeholder="เงื่อนไขพิเศษ..."></textarea></div></div>
+  <button class="gen-btn" id="gb" onclick="genDoc('${tab}')">สร้าง${lbl}</button>
+  <div class="result-card" id="rc">${resultActions('doc',isQT?'QT-สิงห์วิท':'INV-สิงห์วิท')}<div id="rb_doc"></div></div>`;
+}
+
 function genDoc(tab){
-  const isQT=tab==='qt',customer=v('f_customer')||'—',tel=v('f_tel')||'—',project=v('f_project')||'—',date=v('f_date'),note=v('f_note'),items=getItems();
-  const docNum=genNum(isQT?'QT-':'INV-'),dateStr=thaiDate(date);
-  const validDate=isQT?(()=>{const d=date?new Date(date):new Date();d.setDate(d.getDate()+30);return d.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});})():'';
-  const sub=items.reduce((s,x)=>s+x.qty*x.price,0),vat=sub*0.07,total=sub+vat;
-  const rows=items.length?items.map(x=>`<tr><td>${x.desc}</td><td style="text-align:center">${x.qty}</td><td style="text-align:right">${fmtMoney(x.price)}</td><td style="text-align:right">${fmtMoney(x.qty*x.price)}</td></tr>`).join(''):`<tr><td colspan="4" style="text-align:center;color:#A8A69F;padding:10px">ยังไม่มีรายการ</td></tr>`;
-  const html=`<div class="doc-preview"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><div class="doc-co">${CO.name}</div><div class="doc-co-sub">${CO.tag}</div><div class="doc-co-sub">เลขภาษี: ${CO.tax} | โทร: ${CO.tel}</div></div><div><span class="doc-type-badge">${isQT?'QUOTATION':'INVOICE'}</span></div></div><hr class="doc-divider"><div class="doc-meta"><div class="doc-meta-item"><div class="k">ลูกค้า</div><div class="v">${customer}</div></div><div class="doc-meta-item"><div class="k">เลขที่</div><div class="v" style="font-family:'IBM Plex Mono',monospace;font-size:11px">${docNum}</div></div><div class="doc-meta-item"><div class="k">โทรศัพท์</div><div class="v">${tel}</div></div><div class="doc-meta-item"><div class="k">วันที่</div><div class="v">${dateStr}</div></div><div class="doc-meta-item"><div class="k">โปรเจค</div><div class="v">${project}</div></div>${isQT?`<div class="doc-meta-item"><div class="k">Valid ถึง</div><div class="v">${validDate}</div></div>`:''}</div><table class="doc-table"><thead><tr><th>รายละเอียด</th><th style="text-align:center;width:46px">จำนวน</th><th style="text-align:right;width:80px">ราคา/หน่วย</th><th style="text-align:right;width:90px">รวม</th></tr></thead><tbody>${rows}</tbody></table><div class="doc-totals"><div class="doc-total-row"><span>ยอดรวม</span><span>${fmtMoney(sub)}</span></div><div class="doc-total-row"><span>VAT 7%</span><span>${fmtMoney(vat)}</span></div><div class="doc-total-row final"><span>ยอดสุทธิ</span><span>${fmtMoney(total)} บาท</span></div></div>${isQT?`<div class="doc-terms"><strong>เงื่อนไขการชำระ:</strong> งวด 1 (70%) เมื่อเซ็นสัญญา — งวด 2 (30%) เมื่อส่งมอบและเซ็นใบรับมอบ</div>`:''} ${note?`<div class="doc-terms"><strong>หมายเหตุ:</strong> ${note}</div>`:''}<div class="doc-sigs"><div>ลงชื่อ ...................<br>ผู้เสนอราคา</div><div>ลงชื่อ ...................<br>ผู้อนุมัติ / ลูกค้า</div></div></div>`;
-  document.getElementById('result-body').innerHTML=html;
-  document.getElementById('result-card').classList.add('visible');
-  document.getElementById('result-card').scrollIntoView({behavior:'smooth',block:'start'});
+  const isQT=tab==='qt',c=v('f_customer')||'—',tel=v('f_tel')||'—',proj=v('f_project')||'—',date=v('f_date'),note=v('f_note'),items=getItems();
+  const num=gn(isQT?'QT-':'INV-'),ds=thd(date);
+  const vd=isQT?(()=>{const d=date?new Date(date):new Date();d.setDate(d.getDate()+30);return d.toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});})():'';
+  const sub=items.reduce((s,x)=>s+x.qty*x.price,0),vat=sub*0.07,tot=sub+vat;
+  const rows=items.length?items.map(x=>`<tr><td>${x.desc}</td><td style="text-align:center">${x.qty}</td><td style="text-align:right">${fm(x.price)}</td><td style="text-align:right">${fm(x.qty*x.price)}</td></tr>`).join(''):`<tr><td colspan="4" style="text-align:center;color:#A8A69F;padding:10px">ยังไม่มีรายการ</td></tr>`;
+  document.getElementById('rb_doc').innerHTML=`<div class="doc">
+    ${docHeader(isQT?'QUOTATION':'INVOICE',num)}
+    <div class="doc-meta">
+      <div class="doc-meta-item"><div class="k">ลูกค้า</div><div class="v">${c}</div></div>
+      <div class="doc-meta-item"><div class="k">เลขที่</div><div class="v" style="font-family:'IBM Plex Mono',monospace;font-size:10px">${num}</div></div>
+      <div class="doc-meta-item"><div class="k">โทรศัพท์</div><div class="v">${tel}</div></div>
+      <div class="doc-meta-item"><div class="k">วันที่</div><div class="v">${ds}</div></div>
+      <div class="doc-meta-item"><div class="k">โปรเจค</div><div class="v">${proj}</div></div>
+      ${isQT?`<div class="doc-meta-item"><div class="k">Valid ถึง</div><div class="v">${vd}</div></div>`:''}
+    </div>
+    <table class="doc-table"><thead><tr><th>รายละเอียด</th><th style="text-align:center;width:44px">จำนวน</th><th style="text-align:right;width:76px">ราคา/หน่วย</th><th style="text-align:right;width:86px">รวม</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="doc-totals">
+      <div class="doc-tr"><span>ยอดรวม</span><span>${fm(sub)}</span></div>
+      <div class="doc-tr"><span>VAT 7%</span><span>${fm(vat)}</span></div>
+      <div class="doc-tr final"><span>ยอดสุทธิ</span><span>${fm(tot)} บาท</span></div>
+    </div>
+    ${isQT?`<div class="doc-terms"><strong>เงื่อนไขการชำระ:</strong> งวด 1 (70%) เมื่อเซ็นสัญญา — งวด 2 (30%) เมื่อส่งมอบและเซ็นใบรับมอบงาน</div>`:''}
+    ${note?`<div class="doc-terms"><strong>หมายเหตุ:</strong> ${note}</div>`:''}
+    <div class="doc-sigs"><div>ลงชื่อ ...................<br>ผู้เสนอราคา / สิงห์วิท</div><div>ลงชื่อ ...................<br>ผู้อนุมัติ / ลูกค้า</div></div>
+  </div>`;
+  document.getElementById('rc').classList.add('visible');
+  document.getElementById('rc').scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('rt_doc').textContent=isQT?'ใบเสนอราคา — พร้อมใช้':'ใบแจ้งหนี้ — พร้อมใช้';
 }
+
+function render(tab){
+  const c=document.getElementById('main');
+  if(tab==='qt'||tab==='invoice'){c.innerHTML=docFormHtml(tab);return;}
+  if(tab==='handover'){
+    c.innerHTML=`<div class="card"><div class="card-title">✅ ใบรับมอบงาน</div>
+      <div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div>
+      <div class="field"><label>ชื่อโปรเจค</label><input id="f_project" placeholder="ติดตั้งระบบไฟฟ้า"></div>
+      <div class="field"><label>วันที่ส่งมอบ</label><input id="f_date" type="date" value="${td()}"></div>
+      <div class="field"><label>รายการที่ส่งมอบ (แยกบรรทัด)</label><textarea id="f_items" placeholder="ระบบไฟฟ้าชั้น 1&#10;ระบบไฟฟ้าชั้น 2" style="min-height:80px"></textarea></div>
+      <div class="field"><label>การรับประกัน</label><input id="f_warranty" value="1 ปี นับจากวันส่งมอบ"></div></div>
+    <button class="gen-btn" id="gb" onclick="genHandover()">สร้างใบรับมอบงาน</button>
+    <div class="result-card" id="rc">${resultActions('ho','ใบรับมอบงาน-สิงห์วิท')}<div id="rb_ho"></div></div>`;
+    return;
+  }
+  const aiTabs={
+    scope:{title:'🤖 Scope งาน AI',btn:'สร้าง Scope ด้วย AI',id:'sc',file:'Scope-สิงห์วิท',
+      fields:`<div class="field"><label>ประเภทงาน</label><select id="f_wt"><option>ระบบไฟฟ้า</option><option>ระบบประปา</option><option>ระบบปรับอากาศ</option><option>ก่อสร้างอาคาร</option><option>ระบบดับเพลิง</option><option>งานครบวงจร</option></select></div>
+      <div class="field"><label>ประเภทอาคาร</label><input id="f_bl" placeholder="โรงงาน / สำนักงาน / บ้าน"></div>
+      <div class="field"><label>พื้นที่ (ตร.ม.)</label><input id="f_ar" type="number" placeholder="500" inputmode="numeric"></div>
+      <div class="field"><label>ข้อมูลเพิ่มเติม</label><textarea id="f_ex" placeholder="อาคาร 3 ชั้น, ห้องเซิร์ฟเวอร์..."></textarea></div>`},
+    email:{title:'✉️ Email AI',btn:'เขียน Email ด้วย AI',id:'em',file:'Email-สิงห์วิท',
+      fields:`<div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div>
+      <div class="field"><label>จุดประสงค์</label><select id="f_pu"><option value="intro">แนะนำตัว / รับ Lead ใหม่</option><option value="qt_sent">แจ้งส่งใบเสนอราคา</option><option value="followup">Follow up QT</option><option value="progress">อัพเดทความคืบหน้า</option><option value="invoice">แจ้งส่ง Invoice</option></select></div>
+      <div class="field"><label>รายละเอียด</label><textarea id="f_detail" placeholder="ส่ง QT มูลค่า 200,000 บาท..."></textarea></div>
+      <div class="field"><label>โทน</label><select id="f_tone"><option>สุภาพ เป็นมืออาชีพ</option><option>เป็นกันเอง แต่มืออาชีพ</option><option>เป็นทางการ</option></select></div>`},
+    followup:{title:'🔔 Follow Up AI',btn:'สร้าง Follow Up ด้วย AI',id:'fu',file:'FollowUp-สิงห์วิท',
+      fields:`<div class="field"><label>ชื่อลูกค้า</label><input id="f_customer" placeholder="คุณสมชาย"></div>
+      <div class="field"><label>ส่ง QT ไปกี่วันแล้ว</label><input id="f_days" type="number" placeholder="3" inputmode="numeric" min="1"></div>
+      <div class="field"><label>มูลค่า QT (บาท)</label><input id="f_val" type="number" placeholder="250000" inputmode="numeric"></div>
+      <div class="field"><label>ช่องทาง</label><select id="f_ch"><option>Line</option><option>Email</option><option>โทรศัพท์ (script)</option></select></div>`},
+    contract:{title:'📜 สัญญาว่าจ้าง AI',btn:'ร่างสัญญาด้วย AI',id:'ct',file:'สัญญา-สิงห์วิท',
+      fields:`<div class="field"><label>ชื่อผู้ว่าจ้าง</label><input id="f_customer" placeholder="คุณสมชาย / บริษัท เอบีซี"></div>
+      <div class="field"><label>ที่อยู่</label><textarea id="f_addr" placeholder="บ้านเลขที่..."></textarea></div>
+      <div class="field"><label>ชื่องาน / โปรเจค</label><input id="f_project" placeholder="ก่อสร้างอาคาร 3 ชั้น"></div>
+      <div class="field"><label>มูลค่างาน (บาท)</label><input id="f_val" type="number" placeholder="500000" inputmode="numeric"></div>
+      <div class="field"><label>ระยะเวลาแล้วเสร็จ</label><input id="f_dur" placeholder="90 วันนับจากวันเริ่มงาน"></div>
+      <div class="field"><label>scope งาน</label><textarea id="f_scope" placeholder="ระบบไฟฟ้า, ระบบประปา..."></textarea></div>`}
+  };
+  const t=aiTabs[tab];
+  if(!t)return;
+  c.innerHTML=`<div class="card"><div class="card-title">${t.title}</div>${t.fields}</div>
+    <button class="gen-btn" id="gb" onclick="callAI('${tab}')">${t.btn}</button>
+    <div class="result-card" id="rc">${resultActions(t.id,t.file)}<div class="result-body" id="rb_${t.id}"></div></div>`;
+}
+
 function genHandover(){
-  const customer=v('f_customer')||'—',project=v('f_project')||'—',date=v('f_date'),warranty=v('f_warranty')||'1 ปี นับจากวันส่งมอบ';
+  const c=v('f_customer')||'—',proj=v('f_project')||'—',date=v('f_date'),w=v('f_warranty')||'1 ปี นับจากวันส่งมอบ';
   const items=(v('f_items')||'').split('\n').filter(x=>x.trim());
-  const rows=items.length?items.map(x=>`<tr><td>${x.trim()}</td><td style="text-align:center;width:60px">☐</td></tr>`).join(''):`<tr><td colspan="2" style="text-align:center;color:#A8A69F;padding:10px">ยังไม่มีรายการ</td></tr>`;
-  const html=`<div class="doc-preview"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><div class="doc-co">${CO.name}</div><div class="doc-co-sub">${CO.tag}</div></div><div><span class="doc-type-badge">HANDOVER</span></div></div><hr class="doc-divider"><div class="doc-meta"><div class="doc-meta-item"><div class="k">ลูกค้า</div><div class="v">${customer}</div></div><div class="doc-meta-item"><div class="k">วันที่</div><div class="v">${thaiDate(date)}</div></div><div class="doc-meta-item"><div class="k">โปรเจค</div><div class="v">${project}</div></div></div><table class="doc-table"><thead><tr><th>รายการที่ส่งมอบ</th><th style="text-align:center;width:60px">ตรวจรับ</th></tr></thead><tbody>${rows}</tbody></table><div class="doc-terms"><strong>การรับประกัน:</strong> ${warranty}</div><div class="doc-sigs"><div>ลงชื่อ ...................<br>ผู้ส่งมอบ</div><div>ลงชื่อ ...................<br>ผู้รับมอบ / ลูกค้า</div></div></div>`;
-  document.getElementById('result-body').innerHTML=html;
-  document.getElementById('result-card').classList.add('visible');
-  document.getElementById('result-card').scrollIntoView({behavior:'smooth',block:'start'});
+  const rows=items.length?items.map(x=>`<tr><td>${x.trim()}</td><td style="text-align:center;width:56px">☐</td></tr>`).join(''):`<tr><td colspan="2" style="text-align:center;color:#A8A69F;padding:10px">ยังไม่มีรายการ</td></tr>`;
+  document.getElementById('rb_ho').innerHTML=`<div class="doc">
+    ${docHeader('HANDOVER','HO-'+new Date().toLocaleDateString('th-TH'))}
+    <div class="doc-meta">
+      <div class="doc-meta-item"><div class="k">ลูกค้า</div><div class="v">${c}</div></div>
+      <div class="doc-meta-item"><div class="k">วันที่</div><div class="v">${thd(date)}</div></div>
+      <div class="doc-meta-item"><div class="k">โปรเจค</div><div class="v">${proj}</div></div>
+    </div>
+    <table class="doc-table"><thead><tr><th>รายการที่ส่งมอบ</th><th style="text-align:center;width:56px">ตรวจรับ</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="doc-terms"><strong>การรับประกัน:</strong> ${w}</div>
+    <div class="doc-sigs"><div>ลงชื่อ ...................<br>ผู้ส่งมอบ / สิงห์วิท</div><div>ลงชื่อ ...................<br>ผู้รับมอบ / ลูกค้า</div></div>
+  </div>`;
+  document.getElementById('rc').classList.add('visible');
+  document.getElementById('rc').scrollIntoView({behavior:'smooth',block:'start'});
 }
-async function callGemini(type){
-  const btn=document.getElementById('gen-btn');
+
+async function callAI(tab){
+  const btn=document.getElementById('gb');
   btn.disabled=true;btn.innerHTML='<div class="spinner"></div> กำลังสร้าง...';
-  const purposes={intro:'แนะนำตัวและรับ Lead ใหม่',qt_sent:'แจ้งส่งใบเสนอราคาแล้ว',followup:'follow up QT',progress:'อัพเดทความคืบหน้า',invoice:'แจ้งส่ง Invoice'};
-  let prompt='';
   const sys='คุณคือ AI assistant ของ บริษัท สิงห์วิท จำกัด ธุรกิจออกแบบก่อสร้างและระบบอาคาร ตอบภาษาไทย กระชับ มืออาชีพ output พร้อมใช้เลย';
-  if(type==='scope'){const wt=v('f_worktype'),bl=v('f_building'),ar=v('f_area'),ex=v('f_extra');prompt=`${sys}\n\nเขียน scope งาน${wt} สำหรับ${bl||'อาคาร'}${ar?` พื้นที่ ${ar} ตร.ม.`:''}${ex?`\nข้อมูลเพิ่มเติม: ${ex}`:''}
-ตอบ 3 ส่วน:
-1. ขอบเขตงานที่รวม (5-7 bullet)
-2. สิ่งที่ไม่รวมในราคา (3-5 bullet)
-3. เงื่อนไขสำคัญ (2 ข้อ)`;}
-  else if(type==='email'){const cust=v('f_customer')||'ลูกค้า',purpose=v('f_purpose'),detail=v('f_detail'),tone=v('f_tone');prompt=`${sys}\n\nเขียน email ถึงคุณ${cust} เรื่อง: ${purposes[purpose]||purpose}${detail?`\nรายละเอียด: ${detail}`:''}
-โทน: ${tone} จาก: บริษัท สิงห์วิท จำกัด โทร 063-847-7696
-ตอบเฉพาะ email พร้อมใช้ ไม่เกิน 6 บรรทัด`;}
-  else if(type==='followup'){const cust=v('f_customer')||'ลูกค้า',days=v('f_days')||'3',val=v('f_value'),ch=v('f_channel');prompt=`${sys}\n\nเขียนข้อความ follow up ${ch} ถึงคุณ${cust}
-ส่ง QT ไปแล้ว ${days} วัน${val?` มูลค่า ${Number(val).toLocaleString()} บาท`:''} ยังไม่ได้รับคำตอบ
-จาก บริษัท สิงห์วิท จำกัด เป็นมิตร ไม่กดดัน ไม่เกิน 4 ประโยค พร้อมส่งเลย`;}
-  else if(type==='contract'){const cust=v('f_customer')||'ผู้ว่าจ้าง',addr=v('f_addr'),proj=v('f_project'),val=v('f_value'),dur=v('f_duration')||'90 วัน',scope=v('f_scope');prompt=`${sys}\n\nร่างสัญญาว่าจ้างงานก่อสร้าง/ระบบอาคาร
-ผู้รับจ้าง: บริษัท สิงห์วิท จำกัด เลขภาษี 0135565012570
-ผู้ว่าจ้าง: ${cust}${addr?` ที่อยู่: ${addr}`:''}
-งาน: ${proj||'—'}${val?` มูลค่า: ${Number(val).toLocaleString()} บาท`:''} ระยะเวลา: ${dur}${scope?`\nscope: ${scope}`:''}
-ร่างสัญญาภาษาไทย ครอบคลุม: scope, ราคา, งวด 70/30, ระยะเวลา, รับประกัน 1 ปี, ยกเลิกสัญญา`;}
+  const pu={intro:'แนะนำตัวและรับ Lead ใหม่',qt_sent:'แจ้งส่งใบเสนอราคาแล้ว',followup:'follow up QT',progress:'อัพเดทความคืบหน้า',invoice:'แจ้งส่ง Invoice'};
+  let prompt='',rid='';
+  if(tab==='scope'){rid='sc';const wt=v('f_wt'),bl=v('f_bl'),ar=v('f_ar'),ex=v('f_ex');prompt=`${sys}\n\nเขียน scope งาน${wt} สำหรับ${bl||'อาคาร'}${ar?` พื้นที่ ${ar} ตร.ม.`:''}${ex?`\nข้อมูลเพิ่มเติม: ${ex}`:''}\nตอบ 3 ส่วน:\n1. ขอบเขตงานที่รวม (5-7 bullet)\n2. สิ่งที่ไม่รวมในราคา (3-5 bullet)\n3. เงื่อนไขสำคัญ (2 ข้อ)`;}
+  else if(tab==='email'){rid='em';const cu=v('f_customer')||'ลูกค้า',pu2=v('f_pu'),dt=v('f_detail'),tn=v('f_tone');prompt=`${sys}\n\nเขียน email ถึงคุณ${cu} เรื่อง: ${pu[pu2]||pu2}${dt?`\nรายละเอียด: ${dt}`:''}\nโทน: ${tn} จาก: บริษัท สิงห์วิท จำกัด โทร 063-847-7696\nตอบเฉพาะ email พร้อมใช้ ไม่เกิน 6 บรรทัด`;}
+  else if(tab==='followup'){rid='fu';const cu=v('f_customer')||'ลูกค้า',dy=v('f_days')||'3',vl=v('f_val'),ch=v('f_ch');prompt=`${sys}\n\nเขียนข้อความ follow up ${ch} ถึงคุณ${cu}\nส่ง QT ไปแล้ว ${dy} วัน${vl?` มูลค่า ${Number(vl).toLocaleString()} บาท`:''} ยังไม่ได้รับคำตอบ\nจาก บริษัท สิงห์วิท จำกัด เป็นมิตร ไม่กดดัน ไม่เกิน 4 ประโยค พร้อมส่งเลย`;}
+  else if(tab==='contract'){rid='ct';const cu=v('f_customer')||'ผู้ว่าจ้าง',ad=v('f_addr'),pj=v('f_project'),vl=v('f_val'),dr=v('f_dur')||'90 วัน',sc=v('f_scope');prompt=`${sys}\n\nร่างสัญญาว่าจ้างงานก่อสร้าง/ระบบอาคาร\nผู้รับจ้าง: บริษัท สิงห์วิท จำกัด เลขภาษี 0135565012570\nผู้ว่าจ้าง: ${cu}${ad?` ที่อยู่: ${ad}`:''}\nงาน: ${pj||'—'}${vl?` มูลค่า: ${Number(vl).toLocaleString()} บาท`:''} ระยะเวลา: ${dr}${sc?`\nscope: ${sc}`:''}\nร่างสัญญาภาษาไทย ครอบคลุม: scope, ราคา, งวด 70/30, ระยะเวลา, รับประกัน 1 ปี, ยกเลิกสัญญา`;}
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:1024}})
-    });
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:1024}})});
     const data=await res.json();
-    if(data.error){throw new Error(data.error.message);}
-    const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'ไม่สามารถสร้างได้ กรุณาลองใหม่';
-    document.getElementById('result-body').innerHTML=`<div class="result-body">${text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
-    document.getElementById('result-card').classList.add('visible');
-    document.getElementById('result-card').scrollIntoView({behavior:'smooth',block:'start'});
+    if(data.error)throw new Error(data.error.message);
+    const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'ไม่สามารถสร้างได้';
+    document.getElementById('rb_'+rid).innerHTML=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    document.getElementById('rc').classList.add('visible');
+    document.getElementById('rc').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
-    document.getElementById('result-body').innerHTML=`<div class="result-body" style="color:#B5383A">Error: ${e.message}</div>`;
-    document.getElementById('result-card').classList.add('visible');
+    document.getElementById('rb_'+rid).innerHTML=`<span style="color:#B5383A">Error: ${e.message}</span>`;
+    document.getElementById('rc').classList.add('visible');
   }
   btn.disabled=false;
   const lbls={scope:'สร้าง Scope ด้วย AI',email:'เขียน Email ด้วย AI',followup:'สร้าง Follow Up ด้วย AI',contract:'ร่างสัญญาด้วย AI'};
-  btn.innerHTML=lbls[type]||'สร้างด้วย AI';
+  btn.innerHTML=lbls[tab]||'สร้างด้วย AI';
 }
-function copyResult(){const b=document.getElementById('result-body');navigator.clipboard.writeText(b?b.innerText:'').then(()=>{const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}).catch(()=>{});}
+
+render('qt');
 </script>
 </body>
 </html>
